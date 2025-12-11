@@ -9,8 +9,21 @@ The model uses an LSTM (Long Short-Term Memory) network implemented from scratch
 * **Application:** Thermal Energy Storage (TES) management in CSP plants.
 
 ## 📂 Directory Structure
-
-CSP_DNI_Project/ ├── data/ # Dataset directory (contains SolarEnergy.csv) ├── models/ # Saved models and result graphs │ ├── best_dni_model.pth # Trained model weights │ ├── training_result.png │ └── prediction_result.png ├── src/ # Source code modules │ ├── dataset.py # Data loading & Sliding window preprocessing │ └── model.py # LSTM architecture definition ├── main.py # Training execution script ├── predict.py # Inference & Visualization script ├── requirements.txt # Python dependencies └── README.md # Project documentation
+```text
+EF2039_Proj02_20220458_KimDaehyun/
+├── data/                  # Dataset directory (contains SolarEnergy.csv)
+├── models/                # Saved models and result graphs
+│   ├── best_dni_model.pth # Trained model weights
+│   ├── training_result.png
+│   └── prediction_result.png
+├── src/                   # Source code modules
+│   ├── dataset.py         # Data loading & Sliding window preprocessing
+│   └── model.py           # LSTM architecture definition
+├── main.py                # Training execution script
+├── predict.py             # Inference & Visualization script
+├── requirements.txt       # Python dependencies
+└── README.md              # Project documentation
+```
 
 ## 📊 Dataset
 This project uses the **"Solar Radiation Prediction Dataset"** from Kaggle.
