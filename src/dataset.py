@@ -20,16 +20,25 @@ class SolarDataset(Dataset):
         self.window_size = window_size
         
         # 1. Data Loading
-        # Load the raw data into a Pandas DataFrame.
-        raw_df = pd.read_csv(csv_file_path)
+        try:
+            raw_df = pd.read_csv(csv_file_path)
+        except FileNotFoundError:
+            raise FileNotFoundError(f"❌ Could not find file at {csv_file_path}. Please check the path.")
         
         # 2. Data Sorting
         # Sort by UNIXTime in ascending order to ensure correct time-series sequence.
         raw_df = raw_df.sort_values('UNIXTime').reset_index(drop=True)
         
         # 3. Feature Selection
-        # Selected features: Radiation, Temperature, Pressure, Humidity, WindDirection, Speed
+        # Select relevant features for the model.
+        # Target: 'Radiation' (Index 0)
         feature_columns = ['Radiation', 'Temperature', 'Pressure', 'Humidity', 'WindDirection(Degrees)', 'Speed']
+        
+        # Check if columns exist
+        for col in feature_columns:
+            if col not in raw_df.columns:
+                raise ValueError(f"❌ Column '{col}' not found in CSV.")
+
         self.data = raw_df[feature_columns].values.astype(np.float32)
         
         # 4. Data Normalization
@@ -48,14 +57,20 @@ class SolarDataset(Dataset):
             
     def __len__(self):
         # Total samples = Total time steps - Window size
-        # Example: If total data is 100 and window is 24, available samples are 76.
-        return len(self.data_processed) - self.window_size
+        # Ensure non-negative length
+        return max(0, len(self.data_processed) - self.window_size)
 
     def __getitem__(self, idx):
         """
         Retrieves a single sample of input (x) and target (y) for the model.
         """
-        # Input (x): Data sequence from 'idx' to 'idx + window_size' (Past 24 hours)
+        # Input (x): Data sequence from 'idx' to 'idx + window_size' (Past N hours)
+        # Shape: (window_size, num_features)
         x_window = self.data_processed[idx : idx + self.window_size]
         
-        # Target (y): 'Radiation' value at
+        # Target (y): 'Radiation' value at 'idx + window_size' (Future 1 hour later)
+        # We select index 0 because 'Radiation' is the first column in feature_columns.
+        y_target = self.data_processed[idx + self.window_size, 0]
+        
+        # Convert to PyTorch Tensors and RETURN them
+        return torch.tensor(x_window), torch.tensor(y_target)
