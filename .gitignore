@@ -1,0 +1,13 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+
+# Dataset files
+*.csv
+*.xlsx
+
+# OS trash
+.DS_Store
