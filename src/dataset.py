@@ -11,11 +11,11 @@ class SolarDataset(Dataset):
     - Combines date columns ('Year', 'Month', etc.) into datetime objects.
     - Prepares input features and the target variable (Real DNI) for the LSTM model.
     """
-    def __init__(self, csv_file_path, window_size=24):
+    def __init__(self, csv_file_path, window_size=96):
         """
         Args:
             csv_file_path (str): Relative path to the CSV file (e.g., 'data/2017.csv').
-            window_size (int): Length of the look-back period (default: 24 hours).
+            window_size (int): Length of the look-back period (default: 96 => 15min X 96 = 24 hours).
         """
         self.window_size = window_size
         
