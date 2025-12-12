@@ -81,13 +81,15 @@ python predict.py
 - Visualizes the comparison between AI Predictions and Actual Data.
 - Saves the result graph to `models/prediction_result.png`.
 
-### 5. Operational Scheduling (Simulation)
-Scan the 2018 dataset (e.g., Summer season) to suggest turbine operation schedules.
+### 5. 4. Operational Scheduling (Interactive Simulation)
+Run the interactive scheduler to generate turbine operation plans for specific seasons or custom periods.
 ```bash
 python predict_daily.py
 ```
 - Logic: Finds days where DNI > 400 W/m² (Turbine Threshold).
 - Output: Generates a daily report and highlights the Operating Window in yellow.
+- Interactive Mode: The program will ask you to select a season (Spring, Summer, Autumn, Winter) and the duration (number of days).
+- Output: Generates daily status reports and visualizes the Operating Window (Yellow area) in `models/`.
 
 ## 📈 Results
 ### 1. Training Performance
@@ -104,3 +106,16 @@ Below is an example of the AI-generated schedule for a sunny summer day in 2018.
 - Framework: PyTorch
 - Libraries: Pandas, NumPy, Matplotlib, Scikit-learn
 - Methodology: Time-Series Forecasting, LSTM, Sliding Window
+
+## 💡 Reference: Simulation Start Steps
+When using the **Custom Start Step** mode in `predict_daily.py`, refer to the table below to select a specific starting date (based on 15-minute intervals).
+
+| Season | Approx. Date | Start Step (Index) | Description |
+| :--- | :--- | :--- | :--- |
+| **Winter** | Jan 1st | **0** | Start of the year (Cloudy/Short days) |
+| **Spring** | Mar 1st | **5,760** | Increasing DNI trend |
+| **Summer** | Jun 1st | **14,500** | Peak DNI (Best for CSP generation) |
+| **Autumn** | Sep 1st | **23,328** | Decreasing DNI trend |
+| **Winter** | Dec 1st | **32,064** | End of the year |
+
+> **Calculation Logic:** $1 \text{ Day} = 24 \text{ Hours} \times 4 \text{ Steps} = 96 \text{ Steps}$
