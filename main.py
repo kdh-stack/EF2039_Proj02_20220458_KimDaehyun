@@ -20,7 +20,7 @@ def train_model():
     BATCH_SIZE = 32
     LEARNING_RATE = 0.001
     EPOCHS = 20        # Number of training iterations
-    WINDOW_SIZE = 24   # Look-back period (Past 24 hours)
+    WINDOW_SIZE = 96   # Look-back period (Correction: It's 15 minutes of data, so 24 hours is 96.)
     HIDDEN_DIM = 64    # LSTM hidden state dimension
     
     # File Paths for Train/Test Split by Year
